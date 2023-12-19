@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fitness Tracker</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+
+    <div class="container mx-auto p-8 max-w-xl">
+        <h1 class="text-3xl font-semibold text-center text-blue-500 mb-8">Fitness Tracker</h1>
+
+        <form id="trackerForm" class="bg-white p-6 rounded-md shadow-md">
+            <div class="mb-4">
+                <label for="weight" class="block text-sm font-medium text-gray-600">Enter Weight (kg): </label>
+                <input type="number" id="weight" name="weight" class="mt-1 p-2 border rounded-md w-full" required>
+            </div>
+
+            <div class="mb-4">
+                <label for="bloodPressure" class="block text-sm font-medium text-gray-600">Enter Blood Pressure: </label>
+                <input type="text" id="bloodPressure" name="bloodPressure" placeholder="e.g., 120/80" class="mt-1 p-2 border rounded-md w-full" required>
+            </div>
+
+            <div class="mb-4">
+                <label for="workout" class="block text-sm font-medium text-gray-600">Enter Workout: </label>
+                <input type="text" id="workout" name="workout" class="mt-1 p-2 border rounded-md w-full" required>
+            </div>
+
+            <button type="button" class="bg-blue-500 text-white px-4 py-2 rounded-md transition duration-300 hover:bg-blue-700" onclick="addEntry()">Add Entry</button>
+        </form>
+
+        <table id="trackerTable" class="mt-8 w-full bg-white rounded-md shadow-md">
+            <thead>
+                <tr>
+                    <th class="py-2 px-4 bg-blue-500 text-white">Date</th>
+                    <th class="py-2 px-4 bg-blue-500 text-white">Weight (kg)</th>
+                    <th class="py-2 px-4 bg-blue-500 text-white">Blood Pressure</th>
+                    <th class="py-2 px-4 bg-blue-500 text-white">Workout</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Entries will be added dynamically here -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function addEntry() {
+            var weight = document.getElementById('weight').value;
+            var bloodPressure = document.getElementById('bloodPressure').value;
+            var workout = document.getElementById('workout').value;
+            var date = new Date().toLocaleDateString();
+
+            var table = document.getElementById('trackerTable').getElementsByTagName('tbody')[0];
+            var newRow = table.insertRow(table.rows.length);
+
+            var cellDate = newRow.insertCell(0);
+            var cellWeight = newRow.insertCell(1);
+            var cellBloodPressure = newRow.insertCell(2);
+            var cellWorkout = newRow.insertCell(3);
+
+            cellDate.innerHTML = date;
+            cellWeight.innerHTML = weight;
+            cellBloodPressure.innerHTML = bloodPressure;
+            cellWorkout.innerHTML = workout;
+
+            // Clear input fields
+            document.getElementById('weight').value = '';
+            document.getElementById('bloodPressure').value = '';
+            document.getElementById('workout').value = '';
+        }
+    </script>
+
+</body>
+</html>
