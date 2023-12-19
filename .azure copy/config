@@ -1,7 +1,0 @@
-[defaults]
-group = Final
-sku = B1
-appserviceplan = John.Duran_asp_4230
-location = eastus
-web = Fitness-Tracker
-
