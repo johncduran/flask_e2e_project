@@ -3,4 +3,6 @@ SQLAlchemy
 Flask-SQLAlchemy
 gunicorn
 python-dotenv
+authlib
+requests
 pymysql

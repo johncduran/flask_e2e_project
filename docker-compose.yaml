@@ -1,0 +1,12 @@
+version: '3'
+services:
+  flask-app:
+    build:
+      context: .
+    ports:
+      - "8005:8080"
+    volumes:
+      - /home/john_duran/flask_e2e_project:/app
+    environment:
+      - FLASK_APP=app.py
+      - FLASK_RUN_HOST=0.0.0.0

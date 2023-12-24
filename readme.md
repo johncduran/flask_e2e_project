@@ -29,8 +29,30 @@ You would then choose either link that will then launch the app in a new tab.
 ![URL Endpoint Demonstration](screenshots/URL%20Endpoint%20Demonstration.png)
 
 #### Locally with Docker
+I was able to deploy my app using the following docker command:
+
+__docker-compose up --build__
+With this command I was able to create a docker instance. I used this command to tell docker what port to host the app on which was 8080. The 8005 is the port that I will be hosting docker on. Therefore, if I try to access the app through the 8080 port it won't work, only if I switch to 8005 locally will it work. 
+
+I initally did take a different route of deploying my app using regular docker, however I ran into a multitude of issues. Therefore, in the end I decided to use docker-compose. I explain further my process of using regular docker in the section below talking about errors.
+
+##### -Docker Errors
+I did run into an error when I first tried to create the docker image and it said that it failed to load in the requirements.txt file. I was able to fix this issue once I got rid of the 'mysqlclient' line in the requirements.txt file. 
+
+Another error I ran into was trying to deploy using just docker. Each time I kept running the following command it just wouldn't want to deploy 'docker run -d -p 8005:8080 final'. It was saying that it couldn't find the modules authlib and so I figured out that I needed to put that into my requirements.txt file. However, after this I still wasn't able to run it and this time there was no clear error message to guide me.
+![Unsuccessful deployment](screenshots/unsuccessful%20deployment.png)
+
+
+To solve this I used docker-compose to try and get around deploying the app. I was able to create the docker instance this way. However, I still ran into the issue of it not deploying due to it not finding the requests module. I did a pip install of the module, but it was already satisfied according to the terminal. I changed the ports to make sure if that was the issue, but still it didn't seem to fix things. 
+![Successful docker-compose up --build](screenshots/Successful%20docker-compose%20up%20--build.png)
+![Requests module error](screenshots/requests%20module%20error.png)
+
+After almost giving up on this I thought back to before on how it couldn't find the authlib module and so assumed that I needed to do the same with requests. And so I added requests to the requirements.txt file and that actually did fix the issue. Now it is running using 'docker run -p 8005:8080 flask_e2e_project_flask-app' 
+![Successful docker run](screenshots/Successful%20docker%20run.png)
 
 #### On the cloud
+
+To deploy this app on the cloud I used Azure App Services to get the job done. 
 
 ## __.env template__
 
@@ -45,7 +67,7 @@ My Python app then uses the dotenv package to load in the .env values using the 
 "load_dotenv()". After that, I use the os package to pull the specific value I want to use and create a variable from that using the code "os.getenv("SQLALCHEMY_DATABASE_URI")". This allowed me to use my important login credentials all over my app without risking its security.
 
 
-## Database setup
+## __Database setup__
 
 For the database as mentioned before I orignally used Azure to create a flexible MySQL server, however I ran into many connectivity issues when trying to run it and so decided to go with Google's services instead. To connect to the database I originally was using the SQLAlchemy package along with its fucntions like declarative base and engine. With this path I found that it was difficult to try and integrate it with my flask app as I was able to see in the terminal that I had created a new database called 'john' and a table called 'FitnessEntries'. However, I coudln't find an easy way to connect it to the flask app. 
 ![Database Tables](screenshots/Database%20tables.png)
@@ -60,3 +82,9 @@ Instead the code "app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("SQLALCHEMY_
 
 As for structuring my repository to make the database I kept my _app.py_ file contianing only the flask portions of the app. While the db_shema.py file had the database schema layed out in it. I then allowed my _app.py_ file to import variables from the _db_schema.py_ file by making that file be percieved as a package using "from db_schema import db, FitnessEntry". 
 
+## __Oauth__
+
+When users first get into the fitness website they are greated with a login menu. I was able to get my app to be given persmission to use Google's API service for authentification. Once a user is logged in they will then be redirected to the fitness app's homepage. 
+![Sign In](screenshots/Sign%20in.png)
+I first set up the Oauth credentials and was able to get the Client ID and Secret from there. I added my local host and my azure website to be supported to use the google service. 
+![Google Secret Setup](screenshots/Google%20Secret%20Setup.png)
